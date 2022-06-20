@@ -3,9 +3,9 @@ version: "3.9"
 services:
 
   # Database
-  app_database:
+  simple_finances_database:
     image: postgres
-    container_name: app_database
+    container_name: simple_finances_database
     restart: always
     ports:
       - ${DATABASE_PORT}:5432
@@ -19,9 +19,9 @@ services:
       - net
 
   # Application
-  app_api:
+  simple_finances_api:
     build: .
-    container_name: app_api
+    container_name: simple_finances_api
     restart: always
     env_file:
       - .env
@@ -30,9 +30,9 @@ services:
     volumes:
       - .:/node/app
     depends_on:
-      - app_database
+      - simple_finances_database
     links:
-      - app_database
+      - simple_finances_database
     networks:
       - net
 

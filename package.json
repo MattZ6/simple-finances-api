@@ -1,8 +1,16 @@
 {
   "private": true,
-  "name": "api-template",
+  "name": "simple-finances-api",
   "version": "0.0.0",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/MattZ6/simple-finances-api"
+  },
+  "author": {
+    "name": "Matheus Zanin",
+    "url": "https://github.com/MattZ6"
+  },
   "scripts": {
     "build": "rimraf dist && babel src --extensions \".js,.ts\" --out-dir dist --copy-files",
     "start": "cross-env NODE_ENV=production node dist/main/server.js",

@@ -2,18 +2,20 @@
   "openapi": "3.0.0",
   "info": {
     "version": "v0.0.0",
-    "title": "The title goes here",
-    "description": "The description goes here (e.g. API docs for xxx application)",
+    "title": "Simple finances API",
+    "description": "API docs for simple finances application.",
     "license": {
-      "name": "license-name",
-      "url": "link-to-license-docs"
+      "name": "MIT",
+      "url": "https://github.com/MattZ6/simple-finances-api/blob/main/LICENSE.md"
     },
     "contact": {
-      "name": "Your name"
+      "name": "Matheus",
+      "email": "matt_z6@hotmail.com",
+      "url": "https://github.com/MattZ6"
     }
   },
   "externalDocs": {
-    "url": "external-links-goes-here",
+    "url": "https://github.com/MattZ6/simple-finances-api",
     "description": "More info"
   },
   "paths": {}
