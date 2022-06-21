@@ -18,5 +18,90 @@
     "url": "https://github.com/MattZ6/simple-finances-api",
     "description": "More info"
   },
-  "paths": {}
+  "tags": [
+    {
+      "name": "User",
+      "description": "Endpoints related to the Users's scope"
+    }
+  ],
+  "paths": {
+    "/v1/auth/google": {
+      "post": {
+        "tags": ["User"],
+        "summary": "Performs user authentication with Google.",
+        "description": "Performs user authentication with Google.",
+        "requestBody": {
+          "required": true,
+          "description": "Google authorization code",
+          "content": {
+            "application/json": {
+              "example": {
+                "code": "..."
+              },
+              "schema": {
+                "$ref": "#/components/schemas/GoogleAuthorizationCode"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Ok",
+            "content": {
+              "application/json": {
+                "example": {
+                  "access_token": "...",
+                  "refresh_token": "..."
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Code required": {
+                    "value": {
+                      "code": "validation",
+                      "message": "Validation error",
+                      "validation": {
+                        "field": "email",
+                        "type": "required",
+                        "value": null,
+                        "message": "The code field is required."
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "example": {
+                  "code": "internal",
+                  "message": "Internal server error"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "GoogleAuthorizationCode": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
 }

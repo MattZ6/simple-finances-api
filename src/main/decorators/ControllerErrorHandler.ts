@@ -19,6 +19,8 @@ export class ControllerErrorHandlerDecorator implements IController {
 
       return response;
     } catch (error) {
+      console.log(error);
+
       this.createErrorRepository
         .create({
           stack: error?.stack ?? 'NO STACK PROVIDED',
@@ -27,7 +29,11 @@ export class ControllerErrorHandlerDecorator implements IController {
           http_method: request.method,
         })
         .then(() => console.log('[controller]: error successfully registered'))
-        .catch(() => console.log('[controller]: fail to register the error'));
+        .catch(saveError => {
+          console.log('[controller]: fail to register the error');
+
+          console.log(saveError);
+        });
 
       return internalServerError(error);
     }

@@ -17,3 +17,40 @@ model Error {
 
   @@map("errors")
 }
+
+model User {
+  id         String   @id @default(uuid())
+  name       String
+  avatar_url String?
+  created_at DateTime @default(now())
+  updated_at DateTime @default(now()) @updatedAt
+
+  google_profile GoogleProfile?
+  tokens         UserToken[]
+
+  @@map("users")
+}
+
+model UserToken {
+  id         String   @id @default(uuid())
+  token      String   @unique
+  user_id    String
+  user       User     @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  expires_in DateTime
+  created_at DateTime @default(now())
+  updated_at DateTime @default(now()) @updatedAt
+
+  @@map("user_tokens")
+}
+
+model GoogleProfile {
+  user_id           String   @id
+  user              User     @relation(fields: [user_id], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  google_account_id String   @unique
+  email             String
+  avatar_url        String?
+  created_at        DateTime @default(now())
+  updated_at        DateTime @default(now()) @updatedAt
+
+  @@map("google_profiles")
+}
