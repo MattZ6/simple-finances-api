@@ -19,6 +19,8 @@ export class MiddlewareErrorHandlerDecorator implements IMiddleware {
 
       return response;
     } catch (error) {
+      console.log(error);
+
       this.createErrorRepository
         .create({
           stack: error?.stack ?? 'NO STACK PROVIDED',

@@ -1,9 +1,11 @@
 import { Router } from 'express';
 import type { Express } from 'express';
 
+import { authenticationRoutes } from './authentication.routes';
+
 const routes = Router();
 
-// Here goes the routes
+routes.use('/v1/auth', authenticationRoutes);
 
 export function setupRoutes(app: Express) {
   app.use(routes);
