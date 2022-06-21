@@ -1,5 +1,5 @@
 interface IGenerateJWTProvider<P = unknown> {
-  encrypt(
+  generate(
     data: IGenerateJWTProvider.Input<P>
   ): Promise<IGenerateJWTProvider.Output>;
 }

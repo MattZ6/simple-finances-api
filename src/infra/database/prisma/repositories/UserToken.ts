@@ -1,8 +1,40 @@
-import { ICreateUserTokenRepository } from '@application/protocols/repositories/user';
+import {
+  ICreateUserTokenRepository,
+  IDeleteUserTokenByIdRepository,
+  IFindUserTokenByTokenRepository,
+} from '@application/protocols/repositories/user';
 
 import { prisma } from '..';
 
-export class PrismaUserTokensRepository implements ICreateUserTokenRepository {
+export class PrismaUserTokensRepository
+  implements
+    ICreateUserTokenRepository,
+    IDeleteUserTokenByIdRepository,
+    IFindUserTokenByTokenRepository
+{
+  async findByToken(
+    data: IFindUserTokenByTokenRepository.Input
+  ): Promise<IFindUserTokenByTokenRepository.Output> {
+    const { token, include } = data;
+
+    const userToken = await prisma.userToken.findUnique({
+      where: { token },
+      include: { user: include.user },
+    });
+
+    return userToken ?? null;
+  }
+
+  async deleteById(
+    data: IDeleteUserTokenByIdRepository.Input
+  ): Promise<IDeleteUserTokenByIdRepository.Output> {
+    const { id } = data;
+
+    await prisma.userToken.delete({
+      where: { id },
+    });
+  }
+
   async create(
     data: ICreateUserTokenRepository.Input
   ): Promise<ICreateUserTokenRepository.Output> {

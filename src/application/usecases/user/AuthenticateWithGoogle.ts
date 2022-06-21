@@ -38,7 +38,7 @@ export class AuthenticateUserWithGoogleUseCase
         avatar_url: picture,
       });
 
-    const accessToken = await this.generateJWTProvider.encrypt({
+    const accessToken = await this.generateJWTProvider.generate({
       subject: user.id,
       payload: {
         name: user.name,

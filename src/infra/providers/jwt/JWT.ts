@@ -8,7 +8,7 @@ export class JWTProvider implements IGenerateJWTProvider {
     private readonly expiresInSeconds: number
   ) {}
 
-  async encrypt(
+  async generate(
     data: IGenerateJWTProvider.Input<any>
   ): Promise<IGenerateJWTProvider.Output> {
     const { subject, payload } = data;
