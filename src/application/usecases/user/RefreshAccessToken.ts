@@ -1,5 +1,5 @@
 import {
-  UserTokenNotFoundWithProvidedTokenError,
+  UserTokenNotFoundByTokenError,
   UserTokenExpiredError,
 } from '@domain/errors';
 import { IRefreshUserAccessTokenUseCase } from '@domain/usecases/user/RefreshAccessToken';
@@ -35,7 +35,7 @@ export class RefreshUserAccessTokenUseCase
     });
 
     if (!userToken) {
-      throw new UserTokenNotFoundWithProvidedTokenError();
+      throw new UserTokenNotFoundByTokenError();
     }
 
     const hasExpired = userToken.expires_in.getTime() < Date.now();
