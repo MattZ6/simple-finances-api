@@ -13,6 +13,7 @@
   },
   "scripts": {
     "build": "rimraf dist && babel src --extensions \".js,.ts\" --out-dir dist --copy-files",
+    "prestart": "yarn db:migrate",
     "start": "cross-env NODE_ENV=production node dist/main/server.js",
     "test": "jest --passWithNoTests",
     "test:cov": "yarn test --coverage",
@@ -21,6 +22,7 @@
     "docker:down": "docker-compose down",
     "docker:dev": "cross-env DATABASE_PORT=5432 yarn dev",
     "prisma:dev": "cross-env DATABASE_HOST=localhost prisma",
+    "db:migrate": "yarn prisma migrate deploy",
     "type-check": "tsc",
     "lint": "eslint --ignore-path .gitignore \"src/**/*.+(ts|js)\"",
     "format": "prettier --ignore-path .gitignore \"src/**/*.+(ts|js)\" --write"
