@@ -1,8 +1,29 @@
-import { ICreateOrUpdateUserWithGoogle } from '@application/protocols/repositories/user';
+import {
+  ICheckIfUserExistsByIdRepository,
+  ICreateOrUpdateUserWithGoogle,
+} from '@application/protocols/repositories/user';
 
 import { prisma } from '..';
 
-export class PrismaUsersRepository implements ICreateOrUpdateUserWithGoogle {
+export class PrismaUsersRepository
+  implements ICreateOrUpdateUserWithGoogle, ICheckIfUserExistsByIdRepository
+{
+  async checkIfExistsById(
+    data: ICheckIfUserExistsByIdRepository.Input
+  ): Promise<ICheckIfUserExistsByIdRepository.Output> {
+    const { id } = data;
+
+    const count = await prisma.user.count({
+      where: {
+        id: {
+          equals: id,
+        },
+      },
+    });
+
+    return count >= 1;
+  }
+
   async createOrUpdateWithGoogle(
     data: ICreateOrUpdateUserWithGoogle.Input
   ): Promise<ICreateOrUpdateUserWithGoogle.Output> {

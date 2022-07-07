@@ -27,6 +27,7 @@ model User {
 
   google_profile GoogleProfile?
   tokens         UserToken[]
+  transactions   Transaction[]
 
   @@map("users")
 }
@@ -53,4 +54,23 @@ model GoogleProfile {
   updated_at        DateTime @default(now()) @updatedAt
 
   @@map("google_profiles")
+}
+
+enum TransactionType {
+  INCOME
+  OUTCOME
+}
+
+model Transaction {
+  id         String          @id @default(uuid())
+  user_id    String
+  user       User            @relation(fields: [user_id], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  title      String
+  value      Float
+  date       DateTime
+  type       TransactionType
+  created_at DateTime        @default(now())
+  updated_at DateTime        @default(now()) @updatedAt
+
+  @@map("transactions")
 }
