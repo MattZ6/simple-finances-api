@@ -64,9 +64,18 @@ export class GetTransactionsBalanceByUserUseCase
       }
     );
 
+    const parsedTransactions = transactions.map(transaction => {
+      const multiplier = transaction.type === 'INCOME' ? 1 : -1;
+
+      return {
+        ...transaction,
+        value: multiplier * transaction.value,
+      };
+    });
+
     return {
       ...balance,
-      transactions,
+      transactions: parsedTransactions,
     };
   }
 }
