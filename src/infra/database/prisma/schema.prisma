@@ -56,21 +56,36 @@ model GoogleProfile {
   @@map("google_profiles")
 }
 
+model TransactionCategory {
+  id          String   @id @default(uuid())
+  title       String   @unique
+  description String
+  slug        String   @unique
+  created_at  DateTime @default(now())
+  updated_at  DateTime @default(now()) @updatedAt
+
+  transactions Transaction[]
+
+  @@map("transaction_categories")
+}
+
 enum TransactionType {
   INCOME
   OUTCOME
 }
 
 model Transaction {
-  id         String          @id @default(uuid())
-  user_id    String
-  user       User            @relation(fields: [user_id], references: [id], onUpdate: Cascade, onDelete: Cascade)
-  title      String
-  value      Float
-  date       DateTime
-  type       TransactionType
-  created_at DateTime        @default(now())
-  updated_at DateTime        @default(now()) @updatedAt
+  id          String               @id @default(uuid())
+  user_id     String
+  user        User                 @relation(fields: [user_id], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  title       String
+  value       Float
+  date        DateTime
+  type        TransactionType
+  category_id String?
+  category    TransactionCategory? @relation(fields: [category_id], references: [id], onUpdate: Cascade, onDelete: SetNull)
+  created_at  DateTime             @default(now())
+  updated_at  DateTime             @default(now()) @updatedAt
 
   @@map("transactions")
 }
