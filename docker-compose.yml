@@ -18,6 +18,21 @@ services:
     networks:
       - net
 
+  # Cache
+  simple_finances_cache:
+    image: "redis:7.0.3-alpine"
+    container_name: simple_finances_cache
+    restart: always
+    ports:
+      - ${CACHE_PORT}:6379
+    environment:
+      - REDIS_USER=${CACHE_USER}
+      - REDIS_PASSWORD=${CACHE_PASSWORD}
+    volumes:
+      - redis-data:/data/redis
+    networks:
+      - net
+
   # Application
   simple_finances_api:
     build: .
@@ -31,8 +46,10 @@ services:
       - .:/node/app
     depends_on:
       - simple_finances_database
+      - simple_finances_cache
     links:
       - simple_finances_database
+      - simple_finances_cache
     networks:
       - net
 
@@ -41,5 +58,7 @@ networks:
     driver: bridge
 
 volumes:
+  redis-data:
+    driver: local
   pgdata:
     driver: local
