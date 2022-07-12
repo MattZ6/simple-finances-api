@@ -76,6 +76,7 @@
     "express": "4.18.1",
     "google-auth-library": "8.1.0",
     "helmet": "5.1.0",
+    "ioredis": "5.2.0",
     "jsonwebtoken": "8.5.1",
     "rimraf": "3.0.2",
     "swagger-ui-express": "4.4.0"
