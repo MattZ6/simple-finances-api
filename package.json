@@ -24,7 +24,7 @@
     "prisma:dev": "cross-env DATABASE_HOST=localhost prisma",
     "db:migrate": "yarn prisma migrate deploy",
     "db:seed": "yarn db:seed:categories",
-    "db:seed:dev": "cross-env DATABASE_HOST=localhost yarn db:seed",
+    "db:seed:dev": "cross-env DATABASE_HOST=localhost CACHE_HOST=localhost yarn db:seed",
     "db:seed:categories": "tsnd -r tsconfig-paths/register src/main/seeders/transactionCategories.ts",
     "db:config": "yarn db:migrate && yarn db:seed",
     "db:config:dev": "cross-env DATABASE_HOST=localhost CACHE_HOST=localhost yarn db:config",
