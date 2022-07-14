@@ -62,13 +62,13 @@ enum TransactionType {
 }
 
 model TransactionCategory {
-  id          String           @id @default(uuid())
-  title       String           @unique
+  id          String          @id @default(uuid())
+  title       String          @unique
   description String
-  type        TransactionType?
-  slug        String           @unique
-  created_at  DateTime         @default(now())
-  updated_at  DateTime         @default(now()) @updatedAt
+  type        TransactionType
+  slug        String          @unique
+  created_at  DateTime        @default(now())
+  updated_at  DateTime        @default(now()) @updatedAt
 
   transactions Transaction[]
 
