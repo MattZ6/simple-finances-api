@@ -14,7 +14,28 @@ export async function seedTransactionCategories() {
   try {
     await prisma.$connect();
 
-    const categories: SaveCategory[] = [
+    const incomeCategories: SaveCategory[] = [
+      {
+        title: 'Salário',
+        description: 'Recebimento de salário',
+        slug: 'salary',
+        type: 'INCOME',
+      },
+      {
+        title: 'Serviço',
+        description: 'Recebimento de uma prestação de serviço',
+        slug: 'service',
+        type: 'INCOME',
+      },
+      {
+        title: 'Empréstimo',
+        description: 'Recebimento de dinheiro emprestado',
+        slug: 'loan',
+        type: 'INCOME',
+      },
+    ];
+
+    const outcomeCategories: SaveCategory[] = [
       {
         title: 'Alimentação',
         slug: 'feed',
@@ -99,7 +120,7 @@ export async function seedTransactionCategories() {
     ];
 
     await prisma.$transaction(
-      categories.map(category => {
+      [...incomeCategories, ...outcomeCategories].map(category => {
         return prisma.transactionCategory.upsert({
           create: category,
           update: category,
