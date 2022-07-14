@@ -201,6 +201,19 @@
         "summary": "List all transaction categories.",
         "description": "List all transaction categories.",
         "security": [{ "userAuth": [] }],
+        "parameters": [
+          {
+            "name": "type",
+            "description": "The type of category",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": ["INCOME", "OUTCOME"],
+              "nullable": false
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "Ok",
@@ -211,15 +224,50 @@
                     "id": "de0fdf1f-27b8-4660-ace8-00aa6573776f",
                     "title": "Alimentação",
                     "description": "Contas relacionadas à alimentação",
+                    "type": "OUTCOME",
                     "slug": "feed"
                   },
                   {
                     "id": "b4c93af8-4b41-4f4b-9cd5-d97a59128cb2",
                     "title": "Transporte",
                     "description": "Contas relacionadas à transporte e locomoção",
+                    "type": "OUTCOME",
                     "slug": "transportation"
                   }
                 ]
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Required type": {
+                    "value": {
+                      "code": "validation",
+                      "message": "Validation error",
+                      "validation": {
+                        "field": "type",
+                        "type": "required",
+                        "value": null,
+                        "message": "The type field is required"
+                      }
+                    }
+                  },
+                  "Invalid type": {
+                    "value": {
+                      "code": "validation",
+                      "message": "Validation error",
+                      "validation": {
+                        "field": "type",
+                        "type": "invalid",
+                        "value": null,
+                        "message": "The value of the type field is not one of INCOME, OUTCOME values"
+                      }
+                    }
+                  }
+                }
               }
             }
           },
