@@ -110,6 +110,8 @@ export async function seedTransactionCategories() {
     console.log(error);
   } finally {
     await prisma.$disconnect();
+
+    process.exit();
   }
 }
 
