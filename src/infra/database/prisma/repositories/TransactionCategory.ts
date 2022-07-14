@@ -8,9 +8,14 @@ export class PrismaTransactionCategoriesRepository
   async findAll(
     data: IFindAllTransactionCategoriesRepository.Input
   ): Promise<IFindAllTransactionCategoriesRepository.Output> {
-    const { sort_by, order_by } = data;
+    const { type, sort_by, order_by } = data;
 
     const transactions = await prisma.transactionCategory.findMany({
+      where: {
+        type: {
+          equals: type,
+        },
+      },
       orderBy: {
         [sort_by]: order_by,
       },
