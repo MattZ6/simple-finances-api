@@ -7,7 +7,7 @@ interface IFindAllTransactionCategoriesRepository {
 }
 
 namespace IFindAllTransactionCategoriesRepository {
-  export type Input = {
+  export type Input = Pick<TransactionCategory, 'type'> & {
     sort_by: keyof Pick<TransactionCategory, 'title' | 'created_at'>;
     order_by: 'asc' | 'desc';
   };

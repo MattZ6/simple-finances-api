@@ -17,20 +17,27 @@ export class ListAllTransactionCategoriesUseCase
     private readonly findAllTransactionCategoriesRepository: IFindAllTransactionCategoriesRepository
   ) {}
 
-  async execute(): Promise<IListAllTransactionCategoriesUseCase.Output> {
+  async execute(
+    data: IListAllTransactionCategoriesUseCase.Input
+  ): Promise<IListAllTransactionCategoriesUseCase.Output> {
+    const { type } = data;
+
+    const cacheKey = `${this.categoriesCacheKey}:${type}`;
+
     let transactions =
       await this.retrieveCacheProvider.retrieve<IListAllTransactionCategoriesUseCase.Output>(
-        { key: this.categoriesCacheKey }
+        { key: cacheKey }
       );
 
     if (!transactions) {
       transactions = await this.findAllTransactionCategoriesRepository.findAll({
+        type,
         sort_by: 'title',
         order_by: 'asc',
       });
 
       await this.storeCacheProvider.store({
-        key: this.categoriesCacheKey,
+        key: cacheKey,
         expirationTimeInSeconds: this.categoriesCacheExpirationTimeInSeconds,
         payload: transactions,
       });
