@@ -1,3 +1,5 @@
+import { EnumTransactionType } from '@domain/entities/Transaction';
+
 import { ListAllTransactionCategoriesUseCase } from '@application/usecases/transaction/category/ListAll';
 
 import { makeErrorMock } from '../../../../domain';
@@ -6,6 +8,7 @@ import {
   makeFindAllTransactionCategoriesRepositoryOutputMock,
   makeListAllTransactionCategoriesUseCaseCacheExpirationInSecondsMock,
   makeListAllTransactionCategoriesUseCaseCacheKeyMock,
+  makeListAllTransactionCategoriesUseCaseInputMock,
   RetrieveCacheProviderSpy,
   StoreCacheProviderSpy,
 } from '../../../mocks';
@@ -17,6 +20,10 @@ let storeCacheProviderSpy: StoreCacheProviderSpy;
 let findAllTransactionCategoriesRepositorySpy: FindAllTransactionCategoriesRepositorySpy;
 
 let listAllTransactionCategoriesUseCase: ListAllTransactionCategoriesUseCase;
+
+function makeCacheKey(baseKey: string, type: EnumTransactionType) {
+  return `${baseKey}:${type}`;
+}
 
 describe('ListAllTransactionCategoriesUseCase', () => {
   beforeEach(() => {
@@ -42,11 +49,16 @@ describe('ListAllTransactionCategoriesUseCase', () => {
   it('should call RetrieveCacheProvider once with correct values', async () => {
     const retrieveSpy = jest.spyOn(retrieveCacheProviderSpy, 'retrieve');
 
-    await listAllTransactionCategoriesUseCase.execute();
+    const input = makeListAllTransactionCategoriesUseCaseInputMock();
+
+    await listAllTransactionCategoriesUseCase.execute(input);
 
     expect(retrieveSpy).toHaveBeenCalledTimes(1);
     expect(retrieveSpy).toHaveBeenCalledWith({
-      key: listAllTransactionCategoriesUseCaseCacheKeyMock,
+      key: makeCacheKey(
+        listAllTransactionCategoriesUseCaseCacheKeyMock,
+        input.type
+      ),
     });
   });
 
@@ -57,7 +69,9 @@ describe('ListAllTransactionCategoriesUseCase', () => {
       .spyOn(retrieveCacheProviderSpy, 'retrieve')
       .mockRejectedValueOnce(errorMock);
 
-    const promise = listAllTransactionCategoriesUseCase.execute();
+    const input = makeListAllTransactionCategoriesUseCaseInputMock();
+
+    const promise = listAllTransactionCategoriesUseCase.execute(input);
 
     await expect(promise).rejects.toThrowError(errorMock);
   });
@@ -69,7 +83,9 @@ describe('ListAllTransactionCategoriesUseCase', () => {
       .spyOn(retrieveCacheProviderSpy, 'retrieve')
       .mockResolvedValueOnce(retrieveCacheProviderOutputMock as any);
 
-    const output = await listAllTransactionCategoriesUseCase.execute();
+    const input = makeListAllTransactionCategoriesUseCaseInputMock();
+
+    const output = await listAllTransactionCategoriesUseCase.execute(input);
 
     expect(output).toEqual(retrieveCacheProviderOutputMock);
   });
@@ -80,7 +96,9 @@ describe('ListAllTransactionCategoriesUseCase', () => {
       'findAll'
     );
 
-    await listAllTransactionCategoriesUseCase.execute();
+    const input = makeListAllTransactionCategoriesUseCaseInputMock();
+
+    await listAllTransactionCategoriesUseCase.execute(input);
 
     expect(findAllSpy).not.toHaveBeenCalled();
   });
@@ -95,10 +113,13 @@ describe('ListAllTransactionCategoriesUseCase', () => {
       'findAll'
     );
 
-    await listAllTransactionCategoriesUseCase.execute();
+    const input = makeListAllTransactionCategoriesUseCaseInputMock();
+
+    await listAllTransactionCategoriesUseCase.execute(input);
 
     expect(findAllSpy).toHaveBeenCalledTimes(1);
     expect(findAllSpy).toHaveBeenCalledWith({
+      type: input.type,
       sort_by: 'title',
       order_by: 'asc',
     });
@@ -115,7 +136,9 @@ describe('ListAllTransactionCategoriesUseCase', () => {
       .spyOn(findAllTransactionCategoriesRepositorySpy, 'findAll')
       .mockRejectedValueOnce(errorMock);
 
-    const promise = listAllTransactionCategoriesUseCase.execute();
+    const input = makeListAllTransactionCategoriesUseCaseInputMock();
+
+    const promise = listAllTransactionCategoriesUseCase.execute(input);
 
     await expect(promise).rejects.toThrowError(errorMock);
   });
@@ -132,7 +155,9 @@ describe('ListAllTransactionCategoriesUseCase', () => {
       .spyOn(findAllTransactionCategoriesRepositorySpy, 'findAll')
       .mockResolvedValueOnce(findAllTransactionCategoriesRepositoryOutputMock);
 
-    const output = await listAllTransactionCategoriesUseCase.execute();
+    const input = makeListAllTransactionCategoriesUseCaseInputMock();
+
+    const output = await listAllTransactionCategoriesUseCase.execute(input);
 
     expect(output).toEqual(findAllTransactionCategoriesRepositoryOutputMock);
   });
@@ -140,7 +165,9 @@ describe('ListAllTransactionCategoriesUseCase', () => {
   it('should not call StoreCacheProvider if RetrieveCacheProvider returns a value', async () => {
     const storeSpy = jest.spyOn(storeCacheProviderSpy, 'store');
 
-    await listAllTransactionCategoriesUseCase.execute();
+    const input = makeListAllTransactionCategoriesUseCaseInputMock();
+
+    await listAllTransactionCategoriesUseCase.execute(input);
 
     expect(storeSpy).not.toHaveBeenCalled();
   });
@@ -159,11 +186,16 @@ describe('ListAllTransactionCategoriesUseCase', () => {
 
     const storeSpy = jest.spyOn(storeCacheProviderSpy, 'store');
 
-    await listAllTransactionCategoriesUseCase.execute();
+    const input = makeListAllTransactionCategoriesUseCaseInputMock();
+
+    await listAllTransactionCategoriesUseCase.execute(input);
 
     expect(storeSpy).toHaveBeenCalledTimes(1);
     expect(storeSpy).toHaveBeenCalledWith({
-      key: listAllTransactionCategoriesUseCaseCacheKeyMock,
+      key: makeCacheKey(
+        listAllTransactionCategoriesUseCaseCacheKeyMock,
+        input.type
+      ),
       expirationTimeInSeconds:
         listAllTransactionCategoriesUseCaseCacheExpirationInSecondsMock,
       payload: categoriesMock,
@@ -179,7 +211,9 @@ describe('ListAllTransactionCategoriesUseCase', () => {
 
     jest.spyOn(storeCacheProviderSpy, 'store').mockRejectedValueOnce(errorMock);
 
-    const promise = listAllTransactionCategoriesUseCase.execute();
+    const input = makeListAllTransactionCategoriesUseCaseInputMock();
+
+    const promise = listAllTransactionCategoriesUseCase.execute(input);
 
     await expect(promise).rejects.toThrowError(errorMock);
   });
