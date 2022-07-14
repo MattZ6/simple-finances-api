@@ -56,22 +56,23 @@ model GoogleProfile {
   @@map("google_profiles")
 }
 
+enum TransactionType {
+  INCOME
+  OUTCOME
+}
+
 model TransactionCategory {
-  id          String   @id @default(uuid())
-  title       String   @unique
+  id          String           @id @default(uuid())
+  title       String           @unique
   description String
-  slug        String   @unique
-  created_at  DateTime @default(now())
-  updated_at  DateTime @default(now()) @updatedAt
+  type        TransactionType?
+  slug        String           @unique
+  created_at  DateTime         @default(now())
+  updated_at  DateTime         @default(now()) @updatedAt
 
   transactions Transaction[]
 
   @@map("transaction_categories")
-}
-
-enum TransactionType {
-  INCOME
-  OUTCOME
 }
 
 model Transaction {
