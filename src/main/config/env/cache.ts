@@ -7,6 +7,6 @@ export const cacheConfig = {
 
   TRANSACTION_CATEGORY_CACHE: {
     KEY: 'categories',
-    EXPIRATION_IN_SECONDS: 1 * 24 * 60 * 60, // 👈 1 day
+    EXPIRATION_IN_SECONDS: 7 * 24 * 60 * 60, // 👈 7 day
   },
 };
