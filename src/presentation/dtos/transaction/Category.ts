@@ -3,15 +3,16 @@ import { TransactionCategory } from '@domain/entities/TransactionCategory';
 export namespace TransactionCategoryMapper {
   type ListItem = Pick<
     TransactionCategory,
-    'id' | 'title' | 'description' | 'slug'
+    'id' | 'title' | 'description' | 'type' | 'slug'
   >;
 
   export function toListItemDTO(data: TransactionCategory): ListItem {
     return {
       id: data.id,
       title: data.title,
-      slug: data.slug,
       description: data.description,
+      type: data.type,
+      slug: data.slug,
     };
   }
 
