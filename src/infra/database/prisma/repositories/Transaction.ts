@@ -2,6 +2,8 @@ import {
   ICreateTransactionRepository,
   IFindAllMonthsByUserRepository,
   IFindAllTransactionsByUserRepository,
+  IFindTransactionByIdFromUserRepository,
+  IUpdateTransactionRepository,
 } from '@application/protocols/repositories/transaction';
 
 import { prisma } from '..';
@@ -10,17 +12,55 @@ export class PrismaTransactionsRepository
   implements
     ICreateTransactionRepository,
     IFindAllMonthsByUserRepository,
-    IFindAllTransactionsByUserRepository
+    IFindAllTransactionsByUserRepository,
+    IFindTransactionByIdFromUserRepository,
+    IUpdateTransactionRepository
 {
+  async update(
+    data: IUpdateTransactionRepository.Input
+  ): Promise<IUpdateTransactionRepository.Output> {
+    const { id, title, date, value, type, category_id } = data;
+
+    const transaction = await prisma.transaction.update({
+      where: {
+        id,
+      },
+      data: {
+        title,
+        date,
+        value,
+        type,
+        category_id,
+      },
+    });
+
+    return transaction;
+  }
+
+  async findByIdFromUser(
+    data: IFindTransactionByIdFromUserRepository.Input
+  ): Promise<IFindTransactionByIdFromUserRepository.Output> {
+    const { id, user_id } = data;
+
+    const transaction = await prisma.transaction.findFirst({
+      where: {
+        id,
+        user_id,
+      },
+    });
+
+    return transaction;
+  }
+
   async findAllByUser(
     data: IFindAllTransactionsByUserRepository.Input
   ): Promise<IFindAllTransactionsByUserRepository.Output> {
-    const { user_id, date, order_by, order } = data;
+    const { user_id, date, include, order_by, order } = data;
 
     const start = new Date(date.getUTCFullYear(), date.getUTCMonth(), 1);
     const end = new Date(start);
-    end.setMonth(end.getUTCMonth() + 1);
-    end.setDate(end.getUTCDate() - 1);
+    end.setUTCMonth(end.getUTCMonth() + 1);
+    end.setUTCDate(end.getUTCDate() - 1);
 
     const transactions = await prisma.transaction.findMany({
       where: {
@@ -30,6 +70,7 @@ export class PrismaTransactionsRepository
           lte: end,
         },
       },
+      include,
       orderBy: {
         [order_by]: order,
       },
