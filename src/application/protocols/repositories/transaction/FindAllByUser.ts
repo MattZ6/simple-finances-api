@@ -7,11 +7,12 @@ interface IFindAllTransactionsByUserRepository {
 }
 
 namespace IFindAllTransactionsByUserRepository {
-  export type Input = {
+  export type Input = Pick<Transaction, 'user_id'> & {
     date: Date;
     order_by: 'date';
     order: 'asc' | 'desc';
-  } & Pick<Transaction, 'user_id'>;
+    include?: { category?: boolean };
+  };
 
   export type Output = Transaction[];
 }

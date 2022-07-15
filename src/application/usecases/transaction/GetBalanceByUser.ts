@@ -36,6 +36,7 @@ export class GetTransactionsBalanceByUserUseCase
       await this.findAllTransactionsByUserRepository.findAllByUser({
         user_id,
         date: startOfTheMonth,
+        include: { category: true },
         order_by: 'date',
         order: 'desc',
       });
