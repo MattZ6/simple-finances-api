@@ -7,6 +7,7 @@ export type Transaction = {
   value: number;
   date: Date;
   type: EnumTransactionType;
+  category_id?: string;
   created_at: Date;
   updated_at: Date;
 };
