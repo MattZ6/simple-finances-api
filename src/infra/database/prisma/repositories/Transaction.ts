@@ -57,17 +57,24 @@ export class PrismaTransactionsRepository
   ): Promise<IFindAllTransactionsByUserRepository.Output> {
     const { user_id, date, include, order_by, order } = data;
 
-    const start = new Date(date.getUTCFullYear(), date.getUTCMonth(), 1);
+    const start = new Date(
+      date.getUTCFullYear(),
+      date.getUTCMonth(),
+      1,
+      0,
+      0,
+      0,
+      0
+    );
     const end = new Date(start);
-    end.setUTCMonth(end.getUTCMonth() + 1);
-    end.setUTCDate(end.getUTCDate() - 1);
+    end.setMonth(end.getUTCMonth() + 1);
 
     const transactions = await prisma.transaction.findMany({
       where: {
         user_id,
         date: {
           gte: start,
-          lte: end,
+          lt: end,
         },
       },
       include,

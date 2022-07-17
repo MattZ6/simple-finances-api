@@ -29,7 +29,8 @@ export class GetTransactionsBalanceByUserUseCase
     const parsedDate = new Date(date);
     const startOfTheMonth = new Date(
       parsedDate.getUTCFullYear(),
-      parsedDate.getUTCMonth()
+      parsedDate.getUTCMonth(),
+      1
     );
 
     const transactions =
