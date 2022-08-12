@@ -4,7 +4,7 @@ services:
 
   # Database
   simple_finances_database:
-    image: "postgres:14.4-alpine"
+    image: "postgres:14.5-alpine"
     container_name: simple_finances_database
     restart: always
     ports:
