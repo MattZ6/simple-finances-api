@@ -82,7 +82,7 @@
     "express": "4.18.1",
     "google-auth-library": "8.1.1",
     "helmet": "5.1.1",
-    "ioredis": "5.2.1",
+    "ioredis": "5.2.2",
     "jsonwebtoken": "8.5.1",
     "rimraf": "3.0.2",
     "swagger-ui-express": "4.5.0"
