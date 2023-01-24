@@ -33,7 +33,7 @@
     "format": "prettier --ignore-path .gitignore \"src/**/*.+(ts|js)\" --write"
   },
   "engines": {
-    "node": "14.19.3"
+    "node": "16.19.0"
   },
   "prisma": {
     "schema": "src/infra/database/prisma/schema.prisma"
