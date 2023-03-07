@@ -85,6 +85,6 @@
     "ioredis": "5.3.1",
     "jsonwebtoken": "9.0.0",
     "rimraf": "4.1.2",
-    "swagger-ui-express": "4.6.1"
+    "swagger-ui-express": "4.6.2"
   }
 }
