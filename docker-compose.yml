@@ -20,7 +20,7 @@ services:
 
   # Cache
   simple_finances_cache:
-    image: "redis:7.0.8-alpine"
+    image: "redis:7.0.9-alpine"
     container_name: simple_finances_cache
     restart: always
     ports:
